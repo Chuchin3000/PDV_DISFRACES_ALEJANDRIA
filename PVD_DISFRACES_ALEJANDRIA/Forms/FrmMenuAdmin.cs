@@ -16,5 +16,15 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
         {
             InitializeComponent();
         }
+
+        private void FrmMenuAdmin_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
