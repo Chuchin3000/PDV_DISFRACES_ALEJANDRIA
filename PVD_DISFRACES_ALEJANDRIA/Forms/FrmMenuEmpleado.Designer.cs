@@ -121,7 +121,7 @@
             btnCerrarSesion.BackColor = Color.Red;
             btnCerrarSesion.FlatStyle = FlatStyle.Popup;
             btnCerrarSesion.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCerrarSesion.Location = new Point(627, 369);
+            btnCerrarSesion.Location = new Point(627, 365);
             btnCerrarSesion.Name = "btnCerrarSesion";
             btnCerrarSesion.Size = new Size(175, 75);
             btnCerrarSesion.TabIndex = 5;
