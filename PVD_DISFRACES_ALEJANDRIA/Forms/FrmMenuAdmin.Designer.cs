@@ -45,7 +45,7 @@
             // 
             // btnProductos
             // 
-            btnProductos.BackColor = Color.Lime;
+            btnProductos.BackColor = Color.FromArgb(192, 192, 0);
             btnProductos.FlatStyle = FlatStyle.Popup;
             btnProductos.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnProductos.ForeColor = Color.White;
@@ -110,7 +110,7 @@
             // 
             // btnAuditoria
             // 
-            btnAuditoria.BackColor = Color.Red;
+            btnAuditoria.BackColor = Color.FromArgb(192, 0, 0);
             btnAuditoria.FlatStyle = FlatStyle.Popup;
             btnAuditoria.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAuditoria.ForeColor = Color.White;
