@@ -40,7 +40,7 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
         }
 
         public void seleccionarProducto(DataGridView tabla, TextBox id_producto, TextBox nombre, TextBox precio,
-            TextBox talla, CheckBox descontinuado, TextBox id_categoria, TextBox categoria)
+            TextBox talla, TextBox id_categoria, TextBox categoria)
         {
             int fila = tabla.CurrentRow.Index;
 
@@ -56,7 +56,6 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
                     talla.Text = tabla.Rows[fila].Cells[4].Value.ToString();
                     id_categoria.Text = tabla.Rows[fila].Cells[5].Value.ToString();
                     categoria.Text = tabla.Rows[fila].Cells[6].Value.ToString();
-                    descontinuado.Checked = (bool)tabla.Rows[fila].Cells[7].Value;
 
                 }
             }
@@ -67,7 +66,7 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
         }
 
         public void pasarProductosAlCarrito ( DataGridView tabla, TextBox idProducto,TextBox nombreProducto, 
-            TextBox precioPieza, NumericUpDown cantidad)
+            TextBox precioPieza, NumericUpDown cantidad, TextBox descuento)
         {
 
             try
@@ -79,10 +78,11 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
                 {
                     modelo = new DataTable();
 
-                    modelo.Columns.Add("id_producto", typeof(string));
-                    modelo.Columns.Add("nombre_producto", typeof(string));
-                    modelo.Columns.Add("precio_unidad", typeof(double));
-                    modelo.Columns.Add("cantidad", typeof(int));
+                    modelo.Columns.Add("Id_producto", typeof(string));
+                    modelo.Columns.Add("Nombre_producto", typeof(string));
+                    modelo.Columns.Add("Precio_unidad", typeof(double));
+                    modelo.Columns.Add("Cantidad", typeof(int));
+                    modelo.Columns.Add("Descuento", typeof(int));
                     modelo.Columns.Add("SubTotal", typeof(double));
 
                     tabla.DataSource = modelo;
@@ -93,7 +93,7 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
                 foreach (DataRow row in modelo.Rows)
                 {
 
-                    string idExistente = row["id_producto"].ToString();
+                    string idExistente = row["Id_producto"].ToString();
 
                     if (idExistente.Equals(idProductoText))
                     {
@@ -107,10 +107,12 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
 
                 double precioPiezaDouble = double.Parse(precioPieza.Text);
                 int cantidadInt = int.Parse(cantidad.Text);
+                int descuentoInt = int.Parse(descuento.Text);
 
-                double subTotal = precioPiezaDouble * cantidadInt;
+                double subTotal = precioPiezaDouble * cantidadInt * ( 1 - descuentoInt / 100.0 );
+                subTotal = Math.Round(subTotal, 2);
 
-                modelo.Rows.Add(idProductoText, nombreProducto.Text, precioPiezaDouble, cantidadInt, subTotal);
+                modelo.Rows.Add(idProductoText, nombreProducto.Text, precioPiezaDouble, cantidadInt, descuentoInt, subTotal);
 
             }
             catch (Exception ex)
@@ -120,5 +122,6 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
             }
 
         }
+
     }
 }

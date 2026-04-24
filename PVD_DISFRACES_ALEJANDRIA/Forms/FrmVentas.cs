@@ -29,14 +29,36 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
         private void gridProductos_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             DAO.VentaDAO seleccionar = new DAO.VentaDAO();
-            seleccionar.seleccionarProducto(gridProductos, txtIdProducto, txtProducto, txtPrecioPieza, txtTalla, checkDescontinuado,
+            seleccionar.seleccionarProducto(gridProductos, txtIdProducto, txtProducto, txtPrecioPieza, txtTalla,
                 txtIdCategoria, txtCategoria);
         }
 
         private void btnAgregarProducto_Click(object sender, EventArgs e)
         {
             DAO.VentaDAO carrito = new DAO.VentaDAO();
-            carrito.pasarProductosAlCarrito( gridCarrito, txtIdProducto, txtProducto, txtPrecioPieza, numericCantidad );
+            carrito.pasarProductosAlCarrito(gridCarrito, txtIdProducto, txtProducto, txtPrecioPieza, numericCantidad, txtDescuento);
         }
+
+        private void comboBoxEstado_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            VentaDAO mostraritems = new VentaDAO();
+            if ( comboBoxEstado.Text == "Abono" || comboBoxEstado.Text == "Pendiente" )
+            {
+                mostrarAbono(true);
+            }
+            else
+            {
+                mostrarAbono(false);
+            }
+        }
+
+        private void mostrarAbono( bool visible )
+        {
+            labelFecha.Visible = visible;
+            dateFechaEntrega.Visible = visible;
+            labelAbono.Visible = visible;
+            txtAbono.Visible = visible;
+        }
+
     }
 }
