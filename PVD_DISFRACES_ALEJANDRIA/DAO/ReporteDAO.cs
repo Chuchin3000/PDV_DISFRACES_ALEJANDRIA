@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MySqlConnector;
+using PVD_DISFRACES_ALEJANDRIA.Modelos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,339 @@ using System.Threading.Tasks;
 
 namespace PVD_DISFRACES_ALEJANDRIA.DAO
 {
+    /// <summary>
+    /// Clase DAO para manejar las operaciones de reportes
+    /// </summary>
     internal class ReporteDAO
     {
+        private readonly Conexion conexion;
+
+        public ReporteDAO()
+        {
+            conexion = new Conexion();
+        }
+
+        /// <summary>
+        /// Obtiene el total de ventas de una fecha específica.
+        /// Usa la función fnTotalVentasPorFecha
+        /// </summary>
+        public decimal ObtenerTotalVentasPorFecha(DateTime fecha)
+        {
+            decimal total = 0m;
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = "SELECT fnTotalVentasPorFecha(@fecha) AS total";
+
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@fecha", fecha.Date);
+
+                var resultado = cmd.ExecuteScalar();
+                if (resultado != null && resultado != DBNull.Value)
+                    total = Convert.ToDecimal(resultado);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener total de ventas: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return total;
+        }
+
+        /// <summary>
+        /// Obtiene el total de productos vendidos.
+        /// Usa la función fnTotalProductosVendidos
+        /// </summary>
+        public int ObtenerTotalProductosVendidos()
+        {
+            int total = 0;
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = "SELECT fnTotalProductosVendidos() AS total";
+
+                using var cmd = new MySqlCommand(query, conn);
+                var resultado = cmd.ExecuteScalar();
+
+                if (resultado != null && resultado != DBNull.Value)
+                    total = Convert.ToInt32(resultado);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener total de productos vendidos: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return total;
+        }
+
+        /// <summary>
+        /// Obtiene el nombre del producto más vendido.
+        /// Usa la función fnProductoMasVendido
+        /// </summary>
+        public string ObtenerProductoMasVendido()
+        {
+            string producto = "Sin ventas";
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = "SELECT fnProductoMasVendido() AS producto";
+
+                using var cmd = new MySqlCommand(query, conn);
+                var resultado = cmd.ExecuteScalar();
+
+                if (resultado != null && resultado != DBNull.Value)
+                    producto = resultado.ToString() ?? "Sin ventas";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener producto más vendido: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return producto;
+        }
+
+        /// <summary>
+        /// Obtiene el reporte detallado de todas las ventas.
+        /// Usa la vista vwReporteVentas
+        /// </summary>
+        public List<ReporteVenta> ObtenerReporteDetalladoVentas()
+        {
+            var lista = new List<ReporteVenta>();
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = "SELECT * FROM vwReporteVentas";
+
+                using var cmd = new MySqlCommand(query, conn);
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lista.Add(new ReporteVenta
+                    {
+                        IdVenta = reader.GetInt32("idVenta"),
+                        Fecha = reader.GetDateTime("fecha"),
+                        UsuarioQueVendio = reader.GetString("usuarioQueVendio"),
+                        IdProducto = reader.GetInt32("idProducto"),
+                        Producto = reader.GetString("producto"),
+                        Cantidad = reader.GetInt32("cantidad"),
+                        PrecioUnitario = reader.GetDecimal("precioUnitario"),
+                        Subtotal = reader.GetDecimal("subtotal"),
+                        Total = reader.GetDecimal("total")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener reporte detallado: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return lista;
+        }
+
+        /// <summary>
+        /// Obtiene reporte filtrado por rango de fechas.
+        /// </summary>
+        public List<ReporteVenta> ObtenerReportePorRangoFechas(DateTime fechaInicio, DateTime fechaFin)
+        {
+            var lista = new List<ReporteVenta>();
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = @"SELECT * FROM vwReporteVentas 
+                                 WHERE DATE(fecha) BETWEEN @fechaInicio AND @fechaFin
+                                 ORDER BY fecha DESC";
+
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio.Date);
+                cmd.Parameters.AddWithValue("@fechaFin", fechaFin.Date);
+
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lista.Add(new ReporteVenta
+                    {
+                        IdVenta = reader.GetInt32("idVenta"),
+                        Fecha = reader.GetDateTime("fecha"),
+                        UsuarioQueVendio = reader.GetString("usuarioQueVendio"),
+                        IdProducto = reader.GetInt32("idProducto"),
+                        Producto = reader.GetString("producto"),
+                        Cantidad = reader.GetInt32("cantidad"),
+                        PrecioUnitario = reader.GetDecimal("precioUnitario"),
+                        Subtotal = reader.GetDecimal("subtotal"),
+                        Total = reader.GetDecimal("total")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener reporte por fechas: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return lista;
+        }
+
+        /// <summary>
+        /// Obtiene ventas por ID de venta específico.
+        /// </summary>
+        public List<ReporteVenta> ObtenerVentaPorId(int idVenta)
+        {
+            var lista = new List<ReporteVenta>();
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = "SELECT * FROM vwReporteVentas WHERE idVenta = @idVenta";
+
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@idVenta", idVenta);
+
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lista.Add(new ReporteVenta
+                    {
+                        IdVenta = reader.GetInt32("idVenta"),
+                        Fecha = reader.GetDateTime("fecha"),
+                        UsuarioQueVendio = reader.GetString("usuarioQueVendio"),
+                        IdProducto = reader.GetInt32("idProducto"),
+                        Producto = reader.GetString("producto"),
+                        Cantidad = reader.GetInt32("cantidad"),
+                        PrecioUnitario = reader.GetDecimal("precioUnitario"),
+                        Subtotal = reader.GetDecimal("subtotal"),
+                        Total = reader.GetDecimal("total")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al buscar venta: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return lista;
+        }
+
+        /// <summary>
+        /// Obtiene reporte de productos vendidos por rango de fechas.
+        /// Ordenado alfabéticamente por nombre del producto.
+        /// </summary>
+        public List<ReporteProductoVendido> ObtenerReporteProductosVendidos(DateTime fechaInicio, DateTime fechaFin)
+        {
+            var lista = new List<ReporteProductoVendido>();
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = @"
+                    SELECT 
+                        p.codigo      AS Codigo,
+                        p.nombre      AS Nombre,
+                        p.descripcion AS Descripcion,
+                        p.precio      AS Costo,
+                        SUM(dv.cantidad) AS UnidadesVendidas
+                    FROM detalle_ventas dv
+                    JOIN productos p ON p.idProducto = dv.idProducto
+                    JOIN ventas    v ON v.idVenta    = dv.idVenta
+                    WHERE DATE(v.fecha) BETWEEN @fechaInicio AND @fechaFin
+                    GROUP BY p.idProducto, p.codigo, p.nombre, p.descripcion, p.precio
+                    ORDER BY p.nombre ASC";
+
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio.Date);
+                cmd.Parameters.AddWithValue("@fechaFin", fechaFin.Date);
+
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lista.Add(new ReporteProductoVendido
+                    {
+                        Codigo = reader.GetString("Codigo"),
+                        Nombre = reader.GetString("Nombre"),
+                        Descripcion = reader.IsDBNull(reader.GetOrdinal("Descripcion"))
+                                            ? "" : reader.GetString("Descripcion"),
+                        Costo = reader.GetDecimal("Costo"),
+                        UnidadesVendidas = reader.GetInt32("UnidadesVendidas")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener reporte de productos: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return lista;
+        }
+
+        /// <summary>
+        /// Obtiene reporte de ventas por empleado/usuario.
+        /// Ordenado de mayor a menor por monto vendido.
+        /// </summary>
+        public List<ReporteVentasPorEmpleado> ObtenerReporteVentasPorEmpleado(DateTime fechaInicio, DateTime fechaFin)
+        {
+            var lista = new List<ReporteVentasPorEmpleado>();
+            try
+            {
+                var conn = conexion.Abrir();
+                string query = @"
+                    SELECT 
+                        u.idUsuario  AS Clave,
+                        u.usuario    AS Nombre,
+                        SUM(v.total) AS MontoVendido,
+                        COUNT(v.idVenta) AS NumeroVentas
+                    FROM ventas   v
+                    JOIN usuarios u ON u.idUsuario = v.idUsuario
+                    WHERE DATE(v.fecha) BETWEEN @fechaInicio AND @fechaFin
+                    GROUP BY u.idUsuario, u.usuario
+                    ORDER BY MontoVendido DESC";
+
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@fechaInicio", fechaInicio.Date);
+                cmd.Parameters.AddWithValue("@fechaFin", fechaFin.Date);
+
+                using var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    lista.Add(new ReporteVentasPorEmpleado
+                    {
+                        Clave = reader.GetInt32("Clave"),
+                        Nombre = reader.GetString("Nombre"),
+                        MontoVendido = reader.GetDecimal("MontoVendido"),
+                        NumeroVentas = reader.GetInt32("NumeroVentas")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener reporte de empleados: {ex.Message}");
+            }
+            finally
+            {
+                conexion.Cerrar();
+            }
+            return lista;
+        }
     }
 }

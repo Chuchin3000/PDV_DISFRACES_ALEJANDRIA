@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace PVD_DISFRACES_ALEJANDRIA.Modelos
 {
+    /// <summary>
+    /// Modelo que representa un usuario en el sistema
+    /// </summary>
     internal class Usuario
     {
-        public string Nombre { get; set; }            // VARCHAR(20) PK NOT NULL
-        public string Contrasenha { get; set; }       // VARCHAR(20) NOT NULL
+        public int IdUsuario { get; set; }
+        public string NombreUsuario { get; set; } = "";
+        public string Contrasena { get; set; } = "";
+        public string Rol { get; set; } = "";
     }
+
 }

@@ -1,6 +1,6 @@
 ﻿namespace PVD_DISFRACES_ALEJANDRIA.Forms
 {
-    partial class FrmCRUDProductos
+    partial class FrmCRUDUsuarios
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -20,39 +20,34 @@
             panelSuperior = new Panel();
             lblTitulo = new Label();
             groupBoxDatos = new GroupBox();
-            txtStock = new TextBox();
-            txtPrecio = new TextBox();
-            txtDescripcion = new TextBox();
-            txtNombre = new TextBox();
-            txtCodigo = new TextBox();
-            txtID = new TextBox();
-            label6 = new Label();
-            label5 = new Label();
+            cboRol = new ComboBox();
+            txtContrasena = new TextBox();
+            txtUsuario = new TextBox();
+            txtIdUsuario = new TextBox();
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             panelBotones = new Panel();
-            btnLimpiar = new Button();
             btnEliminar = new Button();
             btnActualizar = new Button();
             btnAgregar = new Button();
             btnListar = new Button();
-            dgvProductos = new DataGridView();
+            dgvUsuarios = new DataGridView();
             panelSuperior.SuspendLayout();
             groupBoxDatos.SuspendLayout();
             panelBotones.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvProductos).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).BeginInit();
             SuspendLayout();
             // 
             // panelSuperior
             // 
-            panelSuperior.BackColor = Color.FromArgb(46, 204, 113);
+            panelSuperior.BackColor = Color.FromArgb(52, 152, 219);
             panelSuperior.Controls.Add(lblTitulo);
             panelSuperior.Dock = DockStyle.Top;
             panelSuperior.Location = new Point(0, 0);
             panelSuperior.Name = "panelSuperior";
-            panelSuperior.Size = new Size(1143, 93);
+            panelSuperior.Size = new Size(1029, 93);
             panelSuperior.TabIndex = 0;
             // 
             // lblTitulo
@@ -63,151 +58,107 @@
             lblTitulo.Location = new Point(34, 20);
             lblTitulo.Name = "lblTitulo";
             lblTitulo.TabIndex = 0;
-            lblTitulo.Text = "📦 Gestión de Productos";
+            lblTitulo.Text = "👤 Gestión de Usuarios";
             // 
             // groupBoxDatos
             // 
-            groupBoxDatos.Controls.Add(txtStock);
-            groupBoxDatos.Controls.Add(txtPrecio);
-            groupBoxDatos.Controls.Add(txtDescripcion);
-            groupBoxDatos.Controls.Add(txtNombre);
-            groupBoxDatos.Controls.Add(txtCodigo);
-            groupBoxDatos.Controls.Add(txtID);
-            groupBoxDatos.Controls.Add(label6);
-            groupBoxDatos.Controls.Add(label5);
+            groupBoxDatos.Controls.Add(cboRol);
+            groupBoxDatos.Controls.Add(txtContrasena);
+            groupBoxDatos.Controls.Add(txtUsuario);
+            groupBoxDatos.Controls.Add(txtIdUsuario);
             groupBoxDatos.Controls.Add(label4);
             groupBoxDatos.Controls.Add(label3);
             groupBoxDatos.Controls.Add(label2);
             groupBoxDatos.Controls.Add(label1);
             groupBoxDatos.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            groupBoxDatos.Location = new Point(34, 110);
+            groupBoxDatos.Location = new Point(34, 120);
             groupBoxDatos.Name = "groupBoxDatos";
             groupBoxDatos.Padding = new Padding(3, 4, 3, 4);
-            groupBoxDatos.Size = new Size(1074, 240);
+            groupBoxDatos.Size = new Size(960, 187);
             groupBoxDatos.TabIndex = 1;
             groupBoxDatos.TabStop = false;
-            groupBoxDatos.Text = "Datos del Producto";
+            groupBoxDatos.Text = "Datos del Usuario";
             // 
             // label1 — ID
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 10F);
-            label1.Location = new Point(23, 57);
+            label1.Location = new Point(23, 64);
             label1.Name = "label1";
             label1.TabIndex = 0;
             label1.Text = "ID:";
             // 
-            // txtID
+            // txtIdUsuario
             // 
-            txtID.Font = new Font("Segoe UI", 10F);
-            txtID.Location = new Point(149, 53);
-            txtID.Name = "txtID";
-            txtID.ReadOnly = true;
-            txtID.Size = new Size(114, 30);
-            txtID.TabIndex = 6;
-            txtID.TextChanged += txtID_TextChanged;
+            txtIdUsuario.Font = new Font("Segoe UI", 10F);
+            txtIdUsuario.Location = new Point(149, 60);
+            txtIdUsuario.Name = "txtIdUsuario";
+            txtIdUsuario.ReadOnly = true;
+            txtIdUsuario.Size = new Size(114, 30);
+            txtIdUsuario.TabIndex = 4;
             // 
-            // label2 — Código
+            // label2 — Usuario
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 10F);
-            label2.Location = new Point(514, 57);
+            label2.Location = new Point(23, 124);
             label2.Name = "label2";
             label2.TabIndex = 1;
-            label2.Text = "Código:";
+            label2.Text = "Usuario:";
             // 
-            // txtCodigo
+            // txtUsuario
             // 
-            txtCodigo.Font = new Font("Segoe UI", 10F);
-            txtCodigo.Location = new Point(640, 53);
-            txtCodigo.Name = "txtCodigo";
-            txtCodigo.Size = new Size(285, 30);
-            txtCodigo.TabIndex = 7;
-            txtCodigo.TextChanged += txtCodigo_TextChanged;
+            txtUsuario.Font = new Font("Segoe UI", 10F);
+            txtUsuario.Location = new Point(149, 120);
+            txtUsuario.Name = "txtUsuario";
+            txtUsuario.Size = new Size(285, 30);
+            txtUsuario.TabIndex = 5;
             // 
-            // label3 — Nombre
+            // label3 — Contraseña
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 10F);
-            label3.Location = new Point(23, 117);
+            label3.Location = new Point(514, 64);
             label3.Name = "label3";
             label3.TabIndex = 2;
-            label3.Text = "Nombre:";
+            label3.Text = "Contraseña:";
             // 
-            // txtNombre
+            // txtContrasena
             // 
-            txtNombre.Font = new Font("Segoe UI", 10F);
-            txtNombre.Location = new Point(149, 113);
-            txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(342, 30);
-            txtNombre.TabIndex = 8;
-            txtNombre.TextChanged += txtNombre_TextChanged;
+            txtContrasena.Font = new Font("Segoe UI", 10F);
+            txtContrasena.Location = new Point(640, 60);
+            txtContrasena.Name = "txtContrasena";
+            txtContrasena.PasswordChar = '*';
+            txtContrasena.Size = new Size(285, 30);
+            txtContrasena.TabIndex = 6;
             // 
-            // label4 — Descripción
+            // label4 — Rol
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI", 10F);
-            label4.Location = new Point(514, 117);
+            label4.Location = new Point(514, 124);
             label4.Name = "label4";
             label4.TabIndex = 3;
-            label4.Text = "Descripción:";
+            label4.Text = "Rol:";
             // 
-            // txtDescripcion
+            // cboRol
             // 
-            txtDescripcion.Font = new Font("Segoe UI", 10F);
-            txtDescripcion.Location = new Point(640, 113);
-            txtDescripcion.Multiline = true;
-            txtDescripcion.Name = "txtDescripcion";
-            txtDescripcion.Size = new Size(399, 32);
-            txtDescripcion.TabIndex = 9;
-            txtDescripcion.TextChanged += txtDescripcion_TextChanged;
-            // 
-            // label5 — Precio
-            // 
-            label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 10F);
-            label5.Location = new Point(23, 177);
-            label5.Name = "label5";
-            label5.TabIndex = 4;
-            label5.Text = "Precio:";
-            // 
-            // txtPrecio
-            // 
-            txtPrecio.Font = new Font("Segoe UI", 10F);
-            txtPrecio.Location = new Point(149, 173);
-            txtPrecio.Name = "txtPrecio";
-            txtPrecio.Size = new Size(228, 30);
-            txtPrecio.TabIndex = 10;
-            txtPrecio.TextChanged += txtPrecio_TextChanged;
-            // 
-            // label6 — Stock
-            // 
-            label6.AutoSize = true;
-            label6.Font = new Font("Segoe UI", 10F);
-            label6.Location = new Point(514, 177);
-            label6.Name = "label6";
-            label6.TabIndex = 5;
-            label6.Text = "Stock:";
-            // 
-            // txtStock
-            // 
-            txtStock.Font = new Font("Segoe UI", 10F);
-            txtStock.Location = new Point(640, 173);
-            txtStock.Name = "txtStock";
-            txtStock.Size = new Size(171, 30);
-            txtStock.TabIndex = 11;
-            txtStock.TextChanged += txtStock_TextChanged;
+            cboRol.Font = new Font("Segoe UI", 10F);
+            cboRol.FormattingEnabled = true;
+            cboRol.Location = new Point(640, 120);
+            cboRol.Name = "cboRol";
+            cboRol.Size = new Size(285, 31);
+            cboRol.TabIndex = 7;
             // 
             // panelBotones
             // 
-            panelBotones.Controls.Add(btnLimpiar);
             panelBotones.Controls.Add(btnEliminar);
             panelBotones.Controls.Add(btnActualizar);
             panelBotones.Controls.Add(btnAgregar);
             panelBotones.Controls.Add(btnListar);
-            panelBotones.Location = new Point(34, 370);
+            panelBotones.Location = new Point(34, 327);
             panelBotones.Name = "panelBotones";
-            panelBotones.Size = new Size(1074, 80);
+            panelBotones.Size = new Size(960, 80);
             panelBotones.TabIndex = 2;
             // 
             // btnAgregar
@@ -217,7 +168,7 @@
             btnAgregar.FlatStyle = FlatStyle.Flat;
             btnAgregar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnAgregar.ForeColor = Color.White;
-            btnAgregar.Location = new Point(126, 13);
+            btnAgregar.Location = new Point(171, 13);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(149, 53);
             btnAgregar.TabIndex = 1;
@@ -232,7 +183,7 @@
             btnActualizar.FlatStyle = FlatStyle.Flat;
             btnActualizar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnActualizar.ForeColor = Color.White;
-            btnActualizar.Location = new Point(309, 13);
+            btnActualizar.Location = new Point(343, 13);
             btnActualizar.Name = "btnActualizar";
             btnActualizar.Size = new Size(149, 53);
             btnActualizar.TabIndex = 2;
@@ -247,7 +198,7 @@
             btnEliminar.FlatStyle = FlatStyle.Flat;
             btnEliminar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(491, 13);
+            btnEliminar.Location = new Point(514, 13);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(149, 53);
             btnEliminar.TabIndex = 3;
@@ -262,7 +213,7 @@
             btnListar.FlatStyle = FlatStyle.Flat;
             btnListar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnListar.ForeColor = Color.White;
-            btnListar.Location = new Point(674, 13);
+            btnListar.Location = new Point(686, 13);
             btnListar.Name = "btnListar";
             btnListar.Size = new Size(149, 53);
             btnListar.TabIndex = 0;
@@ -270,53 +221,39 @@
             btnListar.UseVisualStyleBackColor = false;
             btnListar.Click += btnListar_Click;
             // 
-            // btnLimpiar
+            // dgvUsuarios
             // 
-            btnLimpiar.BackColor = Color.FromArgb(149, 165, 166);
-            btnLimpiar.FlatAppearance.BorderSize = 0;
-            btnLimpiar.FlatStyle = FlatStyle.Flat;
-            btnLimpiar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnLimpiar.ForeColor = Color.White;
-            btnLimpiar.Location = new Point(857, 13);
-            btnLimpiar.Name = "btnLimpiar";
-            btnLimpiar.Size = new Size(149, 53);
-            btnLimpiar.TabIndex = 4;
-            btnLimpiar.Text = "🧹 Limpiar";
-            btnLimpiar.UseVisualStyleBackColor = false;
-            btnLimpiar.Click += btnLimpiar_Click;
+            dgvUsuarios.BackgroundColor = Color.White;
+            dgvUsuarios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvUsuarios.Location = new Point(34, 427);
+            dgvUsuarios.Name = "dgvUsuarios";
+            dgvUsuarios.RowHeadersWidth = 51;
+            dgvUsuarios.RowTemplate.Height = 25;
+            dgvUsuarios.Size = new Size(422, 373);
+            dgvUsuarios.TabIndex = 3;
+            dgvUsuarios.CellClick += dgvUsuarios_CellClick;
             // 
-            // dgvProductos
-            // 
-            dgvProductos.BackgroundColor = Color.White;
-            dgvProductos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvProductos.Location = new Point(34, 470);
-            dgvProductos.Name = "dgvProductos";
-            dgvProductos.RowHeadersWidth = 51;
-            dgvProductos.RowTemplate.Height = 25;
-            dgvProductos.Size = new Size(1074, 373);
-            dgvProductos.TabIndex = 3;
-            dgvProductos.CellContentClick += dgvProductos_CellContentClick;
-            // 
-            // FrmCRUDProductos
+            // FrmCRUDUsuarios
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1143, 880);
-            Controls.Add(dgvProductos);
+            ClientSize = new Size(1029, 827);
+            Controls.Add(dgvUsuarios);
             Controls.Add(panelBotones);
             Controls.Add(groupBoxDatos);
             Controls.Add(panelSuperior);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
-            Name = "FrmCRUDProductos";
+            Name = "FrmCRUDUsuarios";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Gestión de Productos - Disfraces Alejandría";
+            Text = "Gestión de Usuarios - Disfraces Alejandría";
+            Load += FrmCRUDUsuarios_Load;  // ✅ nombre del handler actualizado
             panelSuperior.ResumeLayout(false);
             panelSuperior.PerformLayout();
             groupBoxDatos.ResumeLayout(false);
             groupBoxDatos.PerformLayout();
             panelBotones.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvProductos).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvUsuarios).EndInit();
             ResumeLayout(false);
         }
 
@@ -325,24 +262,19 @@
         private Panel panelSuperior;
         private Label lblTitulo;
         private GroupBox groupBoxDatos;
-        private TextBox txtStock;
-        private TextBox txtPrecio;
-        private TextBox txtDescripcion;
-        private TextBox txtNombre;
-        private TextBox txtCodigo;
-        private TextBox txtID;
-        private Label label6;
-        private Label label5;
+        private ComboBox cboRol;
+        private TextBox txtContrasena;
+        private TextBox txtUsuario;
+        private TextBox txtIdUsuario;
         private Label label4;
         private Label label3;
         private Label label2;
         private Label label1;
         private Panel panelBotones;
-        private Button btnLimpiar;
         private Button btnEliminar;
         private Button btnActualizar;
         private Button btnAgregar;
         private Button btnListar;
-        private DataGridView dgvProductos;
+        private DataGridView dgvUsuarios;
     }
 }

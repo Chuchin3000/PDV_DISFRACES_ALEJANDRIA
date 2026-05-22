@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace PVD_DISFRACES_ALEJANDRIA.Modelos
 {
+    /// <summary>
+    /// Modelo que representa un producto en el sistema
+    /// </summary>
     internal class Producto
     {
-        public uint IdProducto { get; set; }         // PK, AUTO_INCREMENT
-        public string Nombre { get; set; }            // VARCHAR(50) NOT NULL
-        public uint Cantidad { get; set; }            // INT UNSIGNED NOT NULL
-        public double Precio { get; set; }            // DOUBLE UNSIGNED NOT NULL
-        public string? Talla { get; set; }           // CHAR(10) NULL
-        public string Categoria { get; set; }         // VARCHAR(20) NOT NULL  ← columna de texto (no FK directa)
-        public bool Descontinuado { get; set; }       // BOOLEAN DEFAULT false
-        public uint IdCategoria { get; set; }         // FK → categorias.id_categoria
+        public int IdProducto { get; set; }
+        public string Codigo { get; set; }
+        public string Nombre { get; set; }
+        public string Descripcion { get; set; }
+        public decimal Precio { get; set; }
+        public int Stock { get; set; }
     }
+
 }

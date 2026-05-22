@@ -7,21 +7,19 @@ using System.Threading.Tasks;
 namespace PVD_DISFRACES_ALEJANDRIA.Modelos
 {
     /// <summary>
-    /// Modelo que representa el datalle de una venta en el sistema
+    /// Modelo para el reporte detaallado de ventas
     /// </summary>
-    internal class DetalleVenta
+    internal class ReporteVenta
     {
-        public int IdDetalle { get; set; }
         public int IdVenta { get; set; }
+        public DateTime Fecha { get; set; }
+        public string UsuarioQueVendio { get; set; } = string.Empty;
         public int IdProducto { get; set; }
+        public string Producto { get; set; } = string.Empty;
         public int Cantidad { get; set; }
         public decimal PrecioUnitario { get; set; }
-
-        // Propiedades conveniencia para mostrar en el grid:
-        public string NombreProducto { get; set; } = string.Empty;
-        public decimal Subtotal => Cantidad * PrecioUnitario;
-
-        public string Codigo { get; internal set; }
+        public decimal Subtotal { get; set; }
+        public decimal Total { get; set; }
     }
 
 }
