@@ -1,4 +1,6 @@
-﻿namespace PVD_DISFRACES_ALEJANDRIA.Forms
+﻿using Microsoft.VisualBasic.Logging;
+
+namespace PVD_DISFRACES_ALEJANDRIA.Forms
 {
     partial class FrmMenuAdmin
     {
@@ -21,7 +23,6 @@
             btnCerrarSesion = new Button();
             btnAuditoria = new Button();
             btnReportes = new Button();
-            btnPedidoTraje = new Button();
             btnVentas = new Button();
             btnEmpleados = new Button();
             btnUsuarios = new Button();
@@ -40,7 +41,6 @@
             panelMenu.Controls.Add(btnAuditoria);
             panelMenu.Controls.Add(btnUsuarios);
             panelMenu.Controls.Add(btnReportes);
-            panelMenu.Controls.Add(btnPedidoTraje);
             panelMenu.Controls.Add(btnVentas);
             panelMenu.Controls.Add(btnEmpleados);
             panelMenu.Controls.Add(btnProductos);
@@ -128,21 +128,6 @@
             btnVentas.UseVisualStyleBackColor = false;
             btnVentas.Click += btnVentas_Click;
             // 
-            // btnPedidoTraje
-            // 
-            btnPedidoTraje.BackColor = Color.FromArgb(50, 50, 50);
-            btnPedidoTraje.Dock = DockStyle.Top;
-            btnPedidoTraje.FlatAppearance.BorderSize = 0;
-            btnPedidoTraje.FlatStyle = FlatStyle.Flat;
-            btnPedidoTraje.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            btnPedidoTraje.ForeColor = Color.White;
-            btnPedidoTraje.Location = new Point(0, 265);
-            btnPedidoTraje.Name = "btnPedidoTraje";
-            btnPedidoTraje.Size = new Size(260, 55);
-            btnPedidoTraje.TabIndex = 4;
-            btnPedidoTraje.Text = "   🎭  Pedido Traje";
-            btnPedidoTraje.UseVisualStyleBackColor = false;
-            // 
             // btnReportes
             // 
             btnReportes.BackColor = Color.FromArgb(50, 50, 50);
@@ -151,10 +136,10 @@
             btnReportes.FlatStyle = FlatStyle.Flat;
             btnReportes.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnReportes.ForeColor = Color.White;
-            btnReportes.Location = new Point(0, 320);
+            btnReportes.Location = new Point(0, 265);
             btnReportes.Name = "btnReportes";
             btnReportes.Size = new Size(260, 55);
-            btnReportes.TabIndex = 5;
+            btnReportes.TabIndex = 4;
             btnReportes.Text = "   📊  Reportes";
             btnReportes.UseVisualStyleBackColor = false;
             btnReportes.Click += btnReportes_Click;
@@ -167,15 +152,15 @@
             btnAuditoria.FlatStyle = FlatStyle.Flat;
             btnAuditoria.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnAuditoria.ForeColor = Color.White;
-            btnAuditoria.Location = new Point(0, 375);
+            btnAuditoria.Location = new Point(0, 320);
             btnAuditoria.Name = "btnAuditoria";
             btnAuditoria.Size = new Size(260, 55);
-            btnAuditoria.TabIndex = 6;
+            btnAuditoria.TabIndex = 5;
             btnAuditoria.Text = "   🔍  Auditoria";
             btnAuditoria.UseVisualStyleBackColor = false;
             btnAuditoria.Click += btnAuditoria_Click;
             // 
-            // btnUsuarios  ← CORREGIDO
+            // btnUsuarios
             // 
             btnUsuarios.BackColor = Color.FromArgb(50, 50, 50);
             btnUsuarios.Dock = DockStyle.Top;
@@ -183,10 +168,10 @@
             btnUsuarios.FlatStyle = FlatStyle.Flat;
             btnUsuarios.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btnUsuarios.ForeColor = Color.White;
-            btnUsuarios.Location = new Point(0, 430);
+            btnUsuarios.Location = new Point(0, 375);
             btnUsuarios.Name = "btnUsuarios";
             btnUsuarios.Size = new Size(260, 55);
-            btnUsuarios.TabIndex = 8;
+            btnUsuarios.TabIndex = 6;
             btnUsuarios.Text = "   👤  Usuarios";
             btnUsuarios.UseVisualStyleBackColor = false;
             btnUsuarios.Click += btnUsuarios_Click_1;
@@ -250,7 +235,6 @@
         private Button btnProductos;
         private Button btnEmpleados;
         private Button btnVentas;
-        private Button btnPedidoTraje;
         private Button btnReportes;
         private Button btnAuditoria;
         private Button btnUsuarios;

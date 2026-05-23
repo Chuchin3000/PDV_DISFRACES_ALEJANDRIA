@@ -13,7 +13,7 @@ using System.Windows.Forms;
 namespace PVD_DISFRACES_ALEJANDRIA.Forms
 {
     /// <summary>
-    /// Clase que representa el formulario para el CRUD de productos.
+    /// Formulario para el CRUD de productos.
     /// </summary>
     public partial class FrmCRUDProductos : Form
     {
@@ -34,11 +34,19 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
             this.Load += FrmCrudProductos_Load;
         }
 
+        // ─────────────────────────────────────────
+        // Carga inicial
+        // ─────────────────────────────────────────
+
         private void FrmCrudProductos_Load(object sender, EventArgs e)
         {
             ListarProductos();
             txtCodigo.Focus();
         }
+
+        // ─────────────────────────────────────────
+        // Helpers de UI
+        // ─────────────────────────────────────────
 
         private void LimpiarCampos()
         {
@@ -48,6 +56,7 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
             txtDescripcion.Text = "";
             txtPrecio.Text = "";
             txtStock.Text = "";
+            txtCodigo.Focus();
         }
 
         private void ListarProductos()
@@ -59,30 +68,19 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
                 dgvProductos.DataSource = null;
                 dgvProductos.DataSource = lista;
 
-                if (dgvProductos.Columns.Contains("IdProducto"))
-                    dgvProductos.Columns["IdProducto"].HeaderText = "ID";
-
-                if (dgvProductos.Columns.Contains("Codigo"))
-                    dgvProductos.Columns["Codigo"].HeaderText = "Código";
-
-                if (dgvProductos.Columns.Contains("Nombre"))
-                    dgvProductos.Columns["Nombre"].HeaderText = "Nombre";
-
-                if (dgvProductos.Columns.Contains("Descripcion"))
-                    dgvProductos.Columns["Descripcion"].HeaderText = "Descripción";
-
-                if (dgvProductos.Columns.Contains("Precio"))
-                    dgvProductos.Columns["Precio"].HeaderText = "Precio";
-
-                if (dgvProductos.Columns.Contains("Stock"))
-                    dgvProductos.Columns["Stock"].HeaderText = "Stock";
+                // Encabezados amigables
+                RenombrarColumna("IdProducto", "ID");
+                RenombrarColumna("Codigo", "Código");
+                RenombrarColumna("Nombre", "Nombre");
+                RenombrarColumna("Descripcion", "Descripción");
+                RenombrarColumna("Precio", "Precio");
+                RenombrarColumna("Stock", "Stock");
 
                 dgvProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al listar productos: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MostrarError("Error al listar productos", ex);
             }
             finally
             {
@@ -90,31 +88,80 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
             }
         }
 
+        /// <summary>Renombra el encabezado de una columna si existe.</summary>
+        private void RenombrarColumna(string nombreColumna, string encabezado)
+        {
+            if (dgvProductos.Columns.Contains(nombreColumna))
+                dgvProductos.Columns[nombreColumna].HeaderText = encabezado;
+        }
+
+        /// <summary>Muestra un MessageBox de error estandarizado.</summary>
+        private static void MostrarError(string contexto, Exception ex)
+        {
+            MessageBox.Show($"{contexto}:\n{ex.Message}",
+                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>Muestra un MessageBox de advertencia estandarizado.</summary>
+        private static void MostrarAdvertencia(string mensaje)
+        {
+            MessageBox.Show(mensaje, "Validación",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        // ─────────────────────────────────────────
+        // Validación — delega a ValidadorProducto
+        // ─────────────────────────────────────────
+
+        private bool ValidarCampos(out decimal precio, out int stock)
+        {
+            precio = 0;
+            stock = 0;
+
+            if (string.IsNullOrWhiteSpace(txtCodigo.Text))
+            {
+                MessageBox.Show("El código del producto es requerido.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtCodigo.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtNombre.Text))
+            {
+                MessageBox.Show("El nombre del producto es requerido.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNombre.Focus();
+                return false;
+            }
+
+            if (!decimal.TryParse(txtPrecio.Text.Replace(',', '.'),
+                System.Globalization.NumberStyles.Any,
+                System.Globalization.CultureInfo.InvariantCulture, out precio))
+            {
+                MessageBox.Show("El precio ingresado no es válido.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPrecio.Focus();
+                return false;
+            }
+
+            if (!int.TryParse(txtStock.Text, out stock))
+            {
+                MessageBox.Show("El stock ingresado no es válido.", "Validación",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtStock.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // ─────────────────────────────────────────
+        // Eventos de botones
+        // ─────────────────────────────────────────
+
         private void btnListar_Click(object sender, EventArgs e)
         {
             ListarProductos();
-        }
-
-        private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            try
-            {
-                var p = (Producto)dgvProductos.Rows[e.RowIndex].DataBoundItem;
-
-                txtID.Text = p.IdProducto.ToString();
-                txtCodigo.Text = p.Codigo;
-                txtNombre.Text = p.Nombre;
-                txtDescripcion.Text = p.Descripcion;
-                txtPrecio.Text = p.Precio.ToString();
-                txtStock.Text = p.Stock.ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al seleccionar producto: " + ex.Message,
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
@@ -134,14 +181,15 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
             {
                 if (productoDAO.Insertar(p))
                 {
-                    MessageBox.Show("Producto insertado correctamente.", "Éxito");
+                    MessageBox.Show("Producto insertado correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ListarProductos();
                     LimpiarCampos();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error insertando: " + ex.Message, "Error");
+                MostrarError("Error al insertar el producto", ex);
             }
         }
 
@@ -149,7 +197,7 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
-                MessageBox.Show("Seleccione un producto para actualizar.", "Atención");
+                MostrarAdvertencia("Seleccione un producto de la tabla para actualizar.");
                 return;
             }
 
@@ -169,14 +217,15 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
             {
                 if (productoDAO.Actualizar(p))
                 {
-                    MessageBox.Show("Producto actualizado correctamente.", "Éxito");
+                    MessageBox.Show("Producto actualizado correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ListarProductos();
                     LimpiarCampos();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error actualizando: " + ex.Message, "Error");
+                MostrarError("Error al actualizar el producto", ex);
             }
         }
 
@@ -184,26 +233,33 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
-                MessageBox.Show("Seleccione un producto para eliminar.", "Atención");
+                MostrarAdvertencia("Seleccione un producto de la tabla para eliminar.");
                 return;
             }
 
-            if (MessageBox.Show("¿Eliminar este producto?", "Confirmar",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            var confirmacion = MessageBox.Show(
+                "¿Está seguro de que desea eliminar este producto?",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (confirmacion != DialogResult.Yes) return;
 
             try
             {
                 int id = int.Parse(txtID.Text);
+
                 if (productoDAO.Eliminar(id))
                 {
-                    MessageBox.Show("Producto eliminado.", "Éxito");
+                    MessageBox.Show("Producto eliminado correctamente.", "Éxito",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ListarProductos();
                     LimpiarCampos();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error eliminando: " + ex.Message, "Error");
+                MostrarError("Error al eliminar el producto", ex);
             }
         }
 
@@ -212,28 +268,37 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
             LimpiarCampos();
         }
 
-        private bool ValidarCampos(out decimal precio, out int stock)
+        // ─────────────────────────────────────────
+        // Selección de fila en el DataGridView
+        // ─────────────────────────────────────────
+
+        private void dgvProductos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            precio = 0;
-            stock = 0;
+            if (e.RowIndex < 0) return;
 
-            if (string.IsNullOrWhiteSpace(txtNombre.Text))
-            { MessageBox.Show("Nombre requerido."); return false; }
+            try
+            {
+                var p = (Producto)dgvProductos.Rows[e.RowIndex].DataBoundItem;
 
-            if (!decimal.TryParse(txtPrecio.Text.Replace(',', '.'),
-                System.Globalization.NumberStyles.Any,
-                System.Globalization.CultureInfo.InvariantCulture, out precio))
-            { MessageBox.Show("Precio inválido."); return false; }
-
-            if (!int.TryParse(txtStock.Text, out stock))
-            { MessageBox.Show("Stock inválido."); return false; }
-
-            return true;
+                txtID.Text = p.IdProducto.ToString();
+                txtCodigo.Text = p.Codigo;
+                txtNombre.Text = p.Nombre;
+                txtDescripcion.Text = p.Descripcion;
+                txtPrecio.Text = p.Precio.ToString();
+                txtStock.Text = p.Stock.ToString();
+            }
+            catch (Exception ex)
+            {
+                MostrarError("Error al seleccionar el producto", ex);
+            }
         }
 
-        private void txtCodigo_TextChanged(object sender, EventArgs e) { }
+        // ─────────────────────────────────────────
+        // Eventos vacíos requeridos por el diseñador
+        // ─────────────────────────────────────────
 
         private void txtID_TextChanged(object sender, EventArgs e) { }
+        private void txtCodigo_TextChanged(object sender, EventArgs e) { }
         private void txtNombre_TextChanged(object sender, EventArgs e) { }
         private void txtDescripcion_TextChanged(object sender, EventArgs e) { }
         private void txtPrecio_TextChanged(object sender, EventArgs e) { }

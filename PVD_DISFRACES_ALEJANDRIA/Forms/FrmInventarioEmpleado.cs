@@ -73,7 +73,7 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
 
             if (dgvInventario.Columns.Contains("Nombre"))
             {
-                dgvInventario.Columns["Nombre"].HeaderText = "Nombre del Disfraz";
+                dgvInventario.Columns["Nombre"].HeaderText = "Nombre del Producto";
                 dgvInventario.Columns["Nombre"].Width = 250;
             }
 
@@ -127,12 +127,12 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
             int productosBajoStock = productos.Count(p => p.Stock <= 10);
             decimal valorTotal = productos.Sum(p => p.Precio * p.Stock);
 
-            lblTotalProductos.Text = $"Total de disfraces: {totalProductos}";
+            lblTotalProductos.Text = $"Total de productos: {totalProductos}";
             lblValorTotal.Text = $"Valor total: {valorTotal:C2}";
 
             if (productosBajoStock > 0)
             {
-                lblProductosBajoStock.Text = $"⚠️ Disfraces bajo stock: {productosBajoStock}";
+                lblProductosBajoStock.Text = $"⚠️ Productos con bajo stock: {productosBajoStock}";
                 lblProductosBajoStock.ForeColor = Color.FromArgb(231, 76, 60);
             }
             else

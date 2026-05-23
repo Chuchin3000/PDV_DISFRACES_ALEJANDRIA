@@ -47,7 +47,7 @@ namespace PVD_DISFRACES_ALEJANDRIA.Forms
         {
             try
             {
-                string usuario = txtUsuario.Text.Trim();
+                string usuario = txtUsuario.Text.Trim(); // Sin ToLower(), respeta mayúsculas
                 string contrasena = txtContraseña.Text.Trim();
 
                 if (string.IsNullOrWhiteSpace(usuario) || string.IsNullOrWhiteSpace(contrasena))

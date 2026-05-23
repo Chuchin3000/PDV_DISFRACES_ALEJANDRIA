@@ -13,10 +13,8 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
     /// </summary>
     internal class DAOUsuarios
     {
-        // Esta variable/atributo va a guardar un objeto de la clase Conexion, que sirve para abrir/cerrar conexiones a MySQL.
         private Conexion conexion;
 
-        // Constructor que crea el objeto de conexión.
         public DAOUsuarios()
         {
             conexion = new Conexion();
@@ -25,24 +23,22 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
         /// <summary>
         /// Método para autenticar al usuario.
         /// </summary>
-        /// <param name="usuario"></param>
-        /// <param name="contrasenaHash"></param>
-        /// <returns></returns>
         public Usuario? Login(string usuario, string contrasenaHash)
         {
-            Usuario? u = null; // Inicialmente es nulo, si no se encuentra el usuario, se devuelve nulo.
+            Usuario? u = null;
 
             try
             {
                 var conn = conexion.Abrir();
-                string query = "SELECT * FROM usuarios WHERE usuario=@u AND contrasena=@c"; // Consult SQL para autenticar un usuario.
+                // BINARY hace la comparación sensible a mayúsculas y minúsculas
+                string query = "SELECT * FROM usuarios WHERE BINARY usuario = @u AND contrasena = @c";
 
-                using var cmd = new MySqlCommand(query, conn); // Comanado para ejecutar la consulta.
-                cmd.Parameters.AddWithValue("@u", usuario); // Recibe nombre de usuario
-                cmd.Parameters.AddWithValue("@c", contrasenaHash); // Recibe contraseña hasheada
+                using var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@u", usuario);
+                cmd.Parameters.AddWithValue("@c", contrasenaHash);
 
-                using var reader = cmd.ExecuteReader(); // reader para leer los resultados de la consulta.
-                if (reader.Read()) // Si existe una fila: construye un nuevo objeto Usuario con los datos de la BD.
+                using var reader = cmd.ExecuteReader();
+                if (reader.Read())
                 {
                     u = new Usuario
                     {
@@ -66,21 +62,20 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
         }
 
         /// <summary>
-        /// Método que devuelve una lista de ususarios desde un procedimiennto almacenado.
+        /// Método que devuelve una lista de usuarios desde un procedimiento almacenado.
         /// </summary>
-        /// <returns></returns>
         public List<Usuario> Listar()
         {
-            List<Usuario> lista = new(); // Lista vacía de usuarios.
+            List<Usuario> lista = new();
 
             try
             {
                 var conn = conexion.Abrir();
-                using var cmd = new MySqlCommand("spListarUsuarios", conn); // Comando para ejecutar el procemiento almacenado.
-                cmd.CommandType = System.Data.CommandType.StoredProcedure; // Indica que es un procedimiento almacenado.
+                using var cmd = new MySqlCommand("spListarUsuarios", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                using var reader = cmd.ExecuteReader(); // Reader para leer los resultados.
-                while (reader.Read()) // Mientras haya filas, crea un nuevo objeto Usuario y lo añade a la lista.
+                using var reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
                     lista.Add(new Usuario
                     {
@@ -104,28 +99,26 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
         }
 
         /// <summary>
-        /// Método para insertar un nuevo usuario usando un procedimiento alamacenado.
+        /// Método para insertar un nuevo usuario usando un procedimiento almacenado.
         /// </summary>
-        /// <param name="u"></param>
-        /// <returns></returns>
         public bool Insertar(Usuario u)
         {
             try
             {
                 var conn = conexion.Abrir();
-                using var cmd = new MySqlCommand("spInsertarUsuario", conn); // Comando para ejecutar el procemiento almacenado.
-                cmd.CommandType = System.Data.CommandType.StoredProcedure; // Indica que es un procedimiento almacenado.
+                using var cmd = new MySqlCommand("spInsertarUsuario", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@pUsuario", u.NombreUsuario);
                 cmd.Parameters.AddWithValue("@pContrasena", u.Contrasena);
                 cmd.Parameters.AddWithValue("@pRol", u.Rol);
 
-                return cmd.ExecuteNonQuery() > 0; // Devuelve true si se insertó al menos una fila.
+                return cmd.ExecuteNonQuery() > 0;
             }
             catch (Exception ex)
             {
                 System.Windows.Forms.MessageBox.Show("Error al insertar usuario: " + ex.Message);
-                return false; // En caso de error, devuelve false.
+                return false;
             }
             finally
             {
@@ -134,29 +127,27 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
         }
 
         /// <summary>
-        /// Método para actualizar un usuario usando un procemiento almacenado.
+        /// Método para actualizar un usuario usando un procedimiento almacenado.
         /// </summary>
-        /// <param name="u"></param>
-        /// <returns></returns>
         public bool Actualizar(Usuario u)
         {
             try
             {
                 var conn = conexion.Abrir();
-                using var cmd = new MySqlCommand("spActualizarUsuario", conn); // Comando para ejecutar el procedimiento almacenado. 
-                cmd.CommandType = System.Data.CommandType.StoredProcedure; // Indica que es un procedimiento almacenado. 
+                using var cmd = new MySqlCommand("spActualizarUsuario", conn);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@pId", u.IdUsuario);
                 cmd.Parameters.AddWithValue("@pUsuario", u.NombreUsuario);
                 cmd.Parameters.AddWithValue("@pContrasena", u.Contrasena);
                 cmd.Parameters.AddWithValue("@pRol", u.Rol);
 
-                return cmd.ExecuteNonQuery() > 0; // Devuelve true si se actualizó al menos una fila.
+                return cmd.ExecuteNonQuery() > 0;
             }
             catch (Exception ex)
             {
                 System.Windows.Forms.MessageBox.Show("Error al actualizar usuario: " + ex.Message);
-                return false; // En caso de error, devuelve false.
+                return false;
             }
             finally
             {
@@ -165,10 +156,8 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
         }
 
         /// <summary>
-        /// Método para eliminar un usuario usando un procedimiento almanesado. 
+        /// Método para eliminar un usuario usando un procedimiento almacenado.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public bool Eliminar(int id)
         {
             try
@@ -192,5 +181,4 @@ namespace PVD_DISFRACES_ALEJANDRIA.DAO
             }
         }
     }
-
 }
